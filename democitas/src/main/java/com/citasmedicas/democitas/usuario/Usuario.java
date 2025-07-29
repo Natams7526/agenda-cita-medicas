@@ -1,5 +1,12 @@
 package com.citasmedicas.democitas.usuario;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.citasmedicas.democitas.direccion.Direccion;
 import com.citasmedicas.democitas.medico.Especialidad;
 import com.citasmedicas.democitas.medico.Medico;
@@ -20,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario {
+public class Usuario implements UserDetails{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +36,19 @@ public class Usuario {
 	private String login;
 	
 	private String contrasena;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority("ROLE_USER")) ;	}
+
+	@Override
+	public String getPassword() {
+		return contrasena;
+	}
+
+	@Override
+	public String getUsername() {
+		return login;
+	}
 
 }
